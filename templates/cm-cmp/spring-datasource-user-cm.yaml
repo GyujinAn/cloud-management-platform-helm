@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-datasource-user-cm
+data:
+  {{- with .Values.datasource.user }}
+  SPRING_DATASOURCE_URL: {{ .url | quote }}
+  SPRING_DATASOURCE_USERNAME: {{ .username | quote }}
+  SPRING_DATASOURCE_PASSWORD: {{ .password | quote }}
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: {{ .driverClassName | quote }}
+  {{- end }}
+

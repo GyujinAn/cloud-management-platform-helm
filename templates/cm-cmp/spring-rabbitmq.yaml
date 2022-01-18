@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-rabbitmq-cm
+data:
+  {{- with .Values.rabbitMQ }}
+  SPRING_RABBITMQ_HOST: {{ .host | quote }}
+  SPRING_RABBITMQ_USERNAME: {{ .username | quote }}
+  SPRING_RABBITMQ_PASSWORD: {{ .password | quote }}
+  SPRING_RABBITMQ_PORT: {{ .port | quote }}
+  {{- end }}

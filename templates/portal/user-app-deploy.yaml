@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal-user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portal-user-pods-label
+  template:
+    metadata:
+      name: portal-user-pod
+      labels:
+        app: portal-user-pods-label
+    spec:
+      containers:
+      - name: portal-user-container
+        image: {{ .Values.image.repository }}/{{ .Values.image.project }}/portal-user:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 18083
+        # resources:
+        #   limits:
+        #     memory: "1000Mi"
+        #     cpu: "1000m"
+        #   requests:
+        #     memory: "1000Mi"
+        #     cpu: "1000m"
+        envFrom:
+        - configMapRef:
+            name: spring-vault-cm
+        - configMapRef:
+            name: spring-redis-cm
+        - configMapRef:
+            name: logging-level-cm
+      imagePullSecrets:
+      - name: harborcred 
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-portal-user
+spec:
+  ports:
+    - name: portal-user-port
+      port: 18083
+      targetPort: 18083
+  selector:
+    app: portal-user-pods-label
+  type: ClusterIP

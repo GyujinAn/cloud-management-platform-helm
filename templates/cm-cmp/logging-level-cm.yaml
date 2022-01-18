@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logging-level-cm
+data:
+  {{- with .Values.logging.level }}
+  LOGGING_LEVEL_ROOT: {{ .root | quote}}
+  LOGGING_LEVEL_CLOUDPLATFORM: {{ .org.hibernate.SQL | quote}}
+  LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: {{ .org.hibernate.type | quote}}
+  {{- end }}
+  

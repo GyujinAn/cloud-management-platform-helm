@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-portal
+  annotations:
+    kubernetes.io/ingress.class: "kong"
+spec:
+  rules:
+  - host: {{ .Values.adminApp.host }}
+    http:
+      paths:
+      - path: {{ .Values.adminApp.path }}
+        pathType: Prefix
+        backend:
+          service:
+            name: svc-admin-app
+            port:
+              number: 18082
+  - host: {{ .Values.userApp.host }}
+    http:
+      paths:
+      - path: {{ .Values.userApp.path }}
+        pathType: Prefix
+        backend:
+          service:
+            name: svc-user-app
+            port:
+              number: 18083

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-service-broker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-service-broker-pods-label
+  template:
+    metadata:
+      name: cloud-service-broker-pod
+      labels:
+        app: cloud-service-broker-pods-label
+    spec:
+      containers:
+      - name: cloud-service-broker-container
+        image: {{ .Values.image.repository }}/{{ .Values.image.project }}/cloud-service-broker:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 18100
+        volumeMounts:
+        - name: cloud-service-broker-volume
+          mountPath: /tmp/okestro/cloudplatform
+        # resources:
+        #   limits:
+        #     memory: "1000Mi"
+        #     cpu: "1000m"
+        #   requests:
+        #     memory: "500Mi"
+        #     cpu: "500m"
+        envFrom:
+        - configMapRef:
+            name: spring-vault-cm
+        - configMapRef:
+            name: spring-datasource-user-cm
+        - configMapRef:
+            name: spring-jpa-cm
+      imagePullSecrets:
+      - name: harborcred       
+      volumes:
+      - name : cloud-service-broker-volume
+        persistentVolumeClaim:
+          claimName: cloud-service-broker-pvc
+

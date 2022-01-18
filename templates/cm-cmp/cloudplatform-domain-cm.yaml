@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudplatform-domain-cm
+data:
+  CLOUDPLATFORM_IAAS_APP_URL: 
+  CLOUDPLATFORM_DASHBOARD_APP_URL: 
+  # {{- with .Values }}
+  # CLOUDPLATFORM_IAAS_APP_URL: 
+  # CLOUDPLATFORM_DASHBOARD_APP_URL: 
+  # {{- end }}

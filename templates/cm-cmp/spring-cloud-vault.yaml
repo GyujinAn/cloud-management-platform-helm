@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-vault-cm
+data:
+  {{- with .Values.vault }}
+  SPRING_CLOUD_VAULT_HOST: {{ .host| quote }}
+  SPRING_CLOUD_VAULT_TOKEN: {{ .token | quote }}
+  SPRING_CLOUD_VAULT_PORT: {{ .port | quote }}
+  SPRING_CLOUD_VAULT_SCHEME: {{ .scheme | quote }}
+  SPRING_CLOUD_VAULT_AUTHENTICATION: {{ .authentication | quote }}
+  SPRING_CLOUD_VAULT_KV_ENABLED: {{ .kv.enabled | quote }}
+  {{- end }}
+
+
