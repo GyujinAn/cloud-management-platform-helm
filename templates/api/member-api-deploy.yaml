@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: member-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: member-api-pods-label
+  template:
+    metadata:
+      name: member-api-pod
+      labels:
+        app: member-api-pods-label
+    spec:
+      containers:
+      - name: member-api-container
+        image: {{ .Values.image.repository }}/{{ .Values.image.project }}/member-api:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8002
+        # resources:
+        #   limits:
+        #     memory: "1000Mi"
+        #     cpu: "1000m"
+        #   requests:
+        #     memory: "1000Mi"
+        #     cpu: "1000m"
+        envFrom:
+        - configMapRef:
+            name: logging-level-cm
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: member-api-svc
+spec:
+  ports:
+    - name: member-api-port
+      port: 8080
+      targetPort: 8002
+  selector:
+    app: member-api-pods-label
+  type: ClusterIP

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-api-pods-label
+  template:
+    metadata:
+      name: service-api-pod
+      labels:
+        app: service-api-pods-label
+    spec:
+      containers:
+      - name: service-api-container
+        image: {{ .Values.image.repository }}/{{ .Values.image.project }}/service-api:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8003
+        # resources:
+        #   limits:
+        #     memory: "1000Mi"
+        #     cpu: "1000m"
+        #   requests:
+        #     memory: "1000Mi"
+        #     cpu: "1000m"
+        envFrom:
+        # - configMapRef:
+        #     name: spring-vault-cm
+        # - configMapRef:
+        #     name: spring-redis-cm
+        - configMapRef:
+            name: logging-level-cm
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-portal-user
+spec:
+  ports:
+    - name: portal-user-port
+      port: 8080
+      targetPort: 8003
+  selector:
+    app: service-api-pods-label
+  type: ClusterIP

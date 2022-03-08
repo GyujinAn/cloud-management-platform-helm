@@ -16,13 +16,4 @@ spec:
             name: svc-admin-app
             port:
               number: 18082
-  - host: {{ .Values.userApp.host }}
-    http:
-      paths:
-      - path: {{ .Values.userApp.path }}
-        pathType: Prefix
-        backend:
-          service:
-            name: svc-user-app
-            port:
-              number: 18083
+

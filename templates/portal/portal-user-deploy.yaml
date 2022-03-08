@@ -27,14 +27,12 @@ spec:
         #     memory: "1000Mi"
         #     cpu: "1000m"
         envFrom:
-        - configMapRef:
-            name: spring-vault-cm
-        - configMapRef:
-            name: spring-redis-cm
+        # - configMapRef:
+        #     name: spring-vault-cm
+        # - configMapRef:
+        #     name: spring-redis-cm
         - configMapRef:
             name: logging-level-cm
-      imagePullSecrets:
-      - name: harborcred 
 
 ---
 
@@ -45,8 +43,8 @@ metadata:
 spec:
   ports:
     - name: portal-user-port
-      port: 18083
-      targetPort: 18083
+      port: 8080
+      targetPort: 9001
   selector:
     app: portal-user-pods-label
   type: ClusterIP

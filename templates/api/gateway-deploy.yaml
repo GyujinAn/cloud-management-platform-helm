@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-pods-label
+  template:
+    metadata:
+      name: gateway-pod
+      labels:
+        app: gateway-pods-label
+    spec:
+      containers:
+      - name: gateway-container
+        image: {{ .Values.image.repository }}/{{ .Values.image.project }}/gateway:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8001
+        # resources:
+        #   limits:
+        #     memory: "1000Mi"
+        #     cpu: "1000m"
+        #   requests:
+        #     memory: "1000Mi"
+        #     cpu: "1000m"
+        envFrom:
+        # - configMapRef:
+        #     name: spring-vault-cm
+        # - configMapRef:
+        #     name: spring-redis-cm
+        - configMapRef:
+            name: logging-level-cm
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-svc
+spec:
+  ports:
+    - name: gateway-port
+      port: 8080
+      targetPort: 8001
+  selector:
+    app: gateway-pods-label
+  type: ClusterIP

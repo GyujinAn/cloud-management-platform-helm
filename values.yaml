@@ -91,7 +91,7 @@ persistentVolume:
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
-  storageClass: "sc-cmp"
+  storageClass: ""
   ## selector can be used to match an existing PersistentVolume
   # selector: {}
   # name: data
@@ -104,48 +104,25 @@ persistentVolume:
 
 protocol: https://
 
-adminApp:
-  host: admin.dev.okestro.cld
-  path: /admin/app
-
-userApp:
-  host: www.dev.okestro.cld
+portalUser:
+  host: www.page.com
   path: /user/app
 
-#vault
-vault:
-  host: 100.0.0.189
-  token: s.0D8xFysWozVxuownT0RZlRdH
-  port: 8200
-  scheme: http
-  authentication: TOKEN
-  kv:
-    enabled: true
+# #vault
+# vault:
+#   host: 100.0.0.189
+#   token: s.0D8xFysWozVxuownT0RZlRdH
+#   port: 8200
+#   scheme: http
+#   authentication: TOKEN
+#   kv:
+#     enabled: true
 
-#keycloak
-keycloak:
-  userAt: true
-  admin:
-    id: 
-    pw: 
-  client:
-    id: 
-    secret: 
-  realm:
-  url: 
-
-#datasource
 datasource:
     url: 
     username: 
     password: 
     driverClassName: org.mariadb.jdbc.Driver
-
-#elastic Search
-elasticSearch:
-  uri: 
-  username: elastic
-  password: 
 
 #jpa
 jpa:
